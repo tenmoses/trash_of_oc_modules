@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+  <id>Commented payment</id>
+  <version>1.0.0</version>
+  <vqmver>2.5.0</vqmver>
+  <author>me</author>
+
+  <file name="/admin/controller/sale/custom_field.php">
+    <operation>
+      <search position="after">
+        <![CDATA[
+              case 'time':
+                $type = $this->language->get('text_time');
+                break;
+            ]]>
+      </search>
+      <add>
+        <![CDATA[
+              case 'other':
+                $type = $this->language->get('text_other');
+                break;
+              case 'hidden':
+                $type = $this->language->get('text_hidden');
+                break;
+                ]]>
+      </add>
+    </operation>
+  </file>
+  <file name="/admin/controller/sale/custom_field.php">
+    <operation>
+      <search position="after">
+        <![CDATA[
+              $data['text_disabled'] = $this->language->get('text_disabled');
+            ]]>
+      </search>
+      <add>
+        <![CDATA[
+        $data['text_other'] = $this->language->get('text_other');
+        $data['text_hidden'] = $this->language->get('text_hidden');
+        ]]>
+      </add>
+    </operation>
+  </file>
+  <file name="/admin/language/russian/sale/custom_field.php">
+    <operation>
+      <search position="after">
+        <![CDATA[
+          $_['text_address']          = 'Адрес';
+        ]]>
+      </search>
+      <add>
+        <![CDATA[
+          $_['text_other']            = 'Прочие';
+          $_['text_hidden']           = 'Скрытое';
+        ]]>
+      </add>
+    </operation>
+  </file>
+  <file name="/admin/view/template/sale/custom_field_form.tpl">
+    <operation>
+      <search position="after">
+        <![CDATA[
+          <option value="datetime"><?php echo $text_datetime; ?></option>
+          <?php } ?>
+          </optgroup>
+        ]]>
+      </search>
+      <add>
+        <![CDATA[
+          <optgroup label="<?php echo $text_other; ?>">
+          <?php if ($type == 'hidden') { ?>
+            <option value="hidden" selected="selected"><?php echo $text_hidden; ?></option>
+          <?php } else { ?>
+            <option value="hidden"><?php echo $text_hidden; ?></option>
+          <?php } ?>
+          </optgroup>
+        ]]>
+      </add>
+    </operation>
+  </file>
+  <file name="/admin/view/template/sale/customer_form.tpl">
+    <operation>
+      <search position="after">
+        <![CDATA[
+        <?php if ($custom_field['type'] == 'datetime') { ?>
+        <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>">
+          <label class="col-sm-2 control-label" for="input-custom-field<?php echo $custom_field['custom_field_id']; ?>"><?php echo $custom_field['name']; ?></label>
+          <div class="col-sm-10">
+            <div class="input-group datetime">
+              <input type="text" name="custom_field[<?php echo $custom_field['custom_field_id']; ?>]" value="<?php echo (isset($account_custom_field[$custom_field['custom_field_id']]) ? $account_custom_field[$custom_field['custom_field_id']] : $custom_field['value']); ?>" placeholder="<?php echo $custom_field['name']; ?>" data-date-format="YYYY-MM-DD HH:mm" id="input-custom-field<?php echo $custom_field['custom_field_id']; ?>" class="form-control" />
+              <span class="input-group-btn">
+              <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+              </span></div>
+            <?php if (isset($error_custom_field[$custom_field['custom_field_id']])) { ?>
+            <div class="text-danger"><?php echo $error_custom_field[$custom_field['custom_field_id']]; ?></div>
+            <?php } ?>
+          </div>
+        </div>
+        <?php } ?>
+        ]]>
+      </search>
+      <add>
+        <![CDATA[
+        <?php if ($custom_field['type'] == 'hidden') { ?>
+          <div class="form-group custom-field custom-field<?php echo $custom_field['custom_field_id']; ?>">
+            <label class="col-sm-2 control-label" for="input-custom-field<?php echo $custom_field['custom_field_id']; ?>"><?php echo $custom_field['name']; ?></label>
+            <div class="col-sm-10">
+              <input type="text" name="custom_field[<?php echo $custom_field['custom_field_id']; ?>]" value="<?php echo (isset($account_custom_field[$custom_field['custom_field_id']]) ? $account_custom_field[$custom_field['custom_field_id']] : $custom_field['value']); ?>" placeholder="<?php echo $custom_field['name']; ?>" id="input-custom-field<?php echo $custom_field['custom_field_id']; ?>" class="form-control" />
+              <?php if (isset($error_custom_field[$custom_field['custom_field_id']])) { ?>
+                <div class="text-danger"><?php echo $error_custom_field[$custom_field['custom_field_id']]; ?></div>
+              <?php } ?>
+            </div>
+          </div>
+        <?php } ?>
+        ]]>
+      </add>
+    </operation>
+  </file>
+</modification>
